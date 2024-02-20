@@ -54,7 +54,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
         ...value,
         postId: post.$id,
         imageId: post.imageId,
-        imageUrl: post.imageUrl,
+        image: post.image,
       });
 
       if (!updatedPost) {

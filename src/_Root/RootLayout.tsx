@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
-import Topbar from "@/components/shared/Topbar";
-import Bottombar from "@/components/shared/Bottombar";
+import Topbar from "../components/shared/TopBar";
+import Bottombar from "../components/shared/BottomBar";
 import LeftSidebar from "@/components/shared/LeftSidebar";
 
 const RootLayout = () => {
@@ -10,7 +10,7 @@ const RootLayout = () => {
       <Topbar />
       <LeftSidebar />
 
-      <section className="flex flex-1 h-full">
+      <section className="flex h-full flex-1">
         <Outlet />
       </section>
 

@@ -61,10 +61,7 @@ export async function saveUserToDB(user: {
 // ============================== SIGN IN
 export async function signInAccount(user: { email: string; password: string }) {
   try {
-    const session = await account.createEmailSession(
-      "swary2021@gmail.com",
-      "12345678",
-    );
+    const session = await account.createEmailSession(user.email, user.password);
 
     return session;
   } catch (error) {
@@ -145,7 +142,7 @@ export async function createPost(post: INewPost) {
       {
         creator: post.userId,
         caption: post.caption,
-        imageUrl: fileUrl,
+        image: fileUrl,
         imageId: uploadedFile.$id,
         location: post.location,
         tags: tags,
@@ -227,9 +224,9 @@ export async function searchPosts(searchTerm: string) {
 }
 
 export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
-  const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(9)];
-
-  if (pageParam) {
+  const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(2)];
+  console.log("fuck", pageParam, queries);
+  if (pageParam && pageParam !== 1) {
     queries.push(Query.cursorAfter(pageParam.toString()));
   }
 
@@ -273,7 +270,7 @@ export async function updatePost(post: IUpdatePost) {
 
   try {
     let image = {
-      imageUrl: post.imageUrl,
+      image: post.image,
       imageId: post.imageId,
     };
 
@@ -289,7 +286,7 @@ export async function updatePost(post: IUpdatePost) {
         throw Error;
       }
 
-      image = { ...image, imageUrl: fileUrl, imageId: uploadedFile.$id };
+      image = { ...image, image: fileUrl, imageId: uploadedFile.$id };
     }
 
     // Convert tags into array
@@ -302,7 +299,7 @@ export async function updatePost(post: IUpdatePost) {
       post.postId,
       {
         caption: post.caption,
-        imageUrl: image.imageUrl,
+        image: image.image,
         imageId: image.imageId,
         location: post.location,
         tags: tags,
