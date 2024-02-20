@@ -1,16 +1,19 @@
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
-import { multiFormatDateString } from "../../lib/utils";
-import { useUser } from "@/_auth/useUser";
-import PostStats from "./PostStats";
+
+import { PostStats } from "@/components/shared";
+import { multiFormatDateString } from "@/lib/utils";
+import { useUserContext } from "@/context/AuthContext";
+
 type PostCardProps = {
   post: Models.Document;
 };
 
-function PostCard({ post }: PostCardProps) {
-  const { CurrentUser } = useUser();
+const PostCard = ({ post }: PostCardProps) => {
+  const { user } = useUserContext();
+
   if (!post.creator) return;
-  if (!CurrentUser) return;
+
   return (
     <div className="post-card">
       <div className="flex-between">
@@ -22,7 +25,7 @@ function PostCard({ post }: PostCardProps) {
                 "/assets/icons/profile-placeholder.svg"
               }
               alt="creator"
-              className="w-12 rounded-full lg:h-12"
+              className="w-12 lg:h-12 rounded-full"
             />
           </Link>
 
@@ -44,8 +47,7 @@ function PostCard({ post }: PostCardProps) {
 
         <Link
           to={`/update-post/${post.$id}`}
-          className={`${CurrentUser?.$id !== post.creator.$id && "hidden"}`}
-        >
+          className={`${user.id !== post.creator.$id && "hidden"}`}>
           <img
             src={"/assets/icons/edit.svg"}
             alt="edit"
@@ -58,29 +60,25 @@ function PostCard({ post }: PostCardProps) {
       <Link to={`/posts/${post.$id}`}>
         <div className="small-medium lg:base-medium py-5">
           <p>{post.caption}</p>
-          {post.tags.length > 0 && post.tags[0] !== "" && (
-            <ul className="mt-2 flex gap-1">
-              {post.tags.map((tag: string, index: string) => (
-                <li
-                  key={`${tag}${index}`}
-                  className="small-regular text-light-3"
-                >
-                  #{tag}
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul className="flex gap-1 mt-2">
+            {post.tags.map((tag: string, index: string) => (
+              <li key={`${tag}${index}`} className="text-light-3 small-regular">
+                #{tag}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <img
-          src={post.image || "/assets/icons/profile-placeholder.svg"}
+          src={post.imageUrl || "/assets/icons/profile-placeholder.svg"}
           alt="post image"
           className="post-card_img"
         />
       </Link>
 
-      <PostStats post={post} userId={CurrentUser.$id} />
+      <PostStats post={post} userId={user.id} />
     </div>
   );
-}
+};
+
 export default PostCard;

@@ -1,17 +1,22 @@
-import { Outlet } from "react-router";
-import LeftBar from "@/components/shared/LeftBar";
-import TopBar from "@/components/shared/TopBar";
-import BottomBar from "@/components/shared/BottomBar";
-export default function RootLayout() {
-  return (
-    <div className="min-h-screen w-full  md:flex">
-      <TopBar></TopBar>
-      <LeftBar></LeftBar>
+import { Outlet } from "react-router-dom";
 
-      <section className="flex h-full flex-1">
-        <Outlet></Outlet>
+import Topbar from "@/components/shared/Topbar";
+import Bottombar from "@/components/shared/Bottombar";
+import LeftSidebar from "@/components/shared/LeftSidebar";
+
+const RootLayout = () => {
+  return (
+    <div className="w-full md:flex">
+      <Topbar />
+      <LeftSidebar />
+
+      <section className="flex flex-1 h-full">
+        <Outlet />
       </section>
-      <BottomBar></BottomBar>
+
+      <Bottombar />
     </div>
   );
-}
+};
+
+export default RootLayout;

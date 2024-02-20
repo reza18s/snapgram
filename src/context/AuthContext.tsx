@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { IUser } from "@/types";
-import { getCurrentUser } from "@/api/UserApi";
+import { getCurrentUser } from "@/lib/appwrite/api";
 
 export const INITIAL_USER = {
   id: "",
@@ -56,11 +56,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         return true;
       }
-      navigate("/sign-in");
+
       return false;
     } catch (error) {
-      console.error("fuck");
-      navigate("/sign-in");
+      console.error(error);
       return false;
     } finally {
       setIsLoading(false);
@@ -92,9 +91,4 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function UseAuth() {
-  const Context = useContext(AuthContext);
-  if (Context == undefined)
-    throw new Error("AuthContext was used outside the AuthProvider ");
-  return Context;
-}
+export const useUserContext = () => useContext(AuthContext);
