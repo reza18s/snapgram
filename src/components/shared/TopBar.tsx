@@ -12,12 +12,12 @@ const Topbar = () => {
 
   useEffect(() => {
     if (isSuccess) navigate(0);
-  }, [isSuccess]);
+  }, [isSuccess, navigate]);
 
   return (
     <section className="topbar">
-      <div className="flex-between py-4 px-5">
-        <Link to="/" className="flex gap-3 items-center">
+      <div className="flex-between px-5 py-4">
+        <Link to="/" className="flex items-center gap-3">
           <img
             src="/assets/images/logo.svg"
             alt="logo"
@@ -30,7 +30,8 @@ const Topbar = () => {
           <Button
             variant="ghost"
             className="shad-button_ghost"
-            onClick={() => signOut()}>
+            onClick={() => signOut()}
+          >
             <img src="/assets/icons/logout.svg" alt="logout" />
           </Button>
           <Link to={`/profile/${user.id}`} className="flex-center gap-3">

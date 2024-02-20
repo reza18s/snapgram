@@ -41,9 +41,9 @@ const PostForm = ({ post, action }: PostFormProps) => {
   });
 
   // Query
-  const { mutateAsync: createPost, isLoading: isLoadingCreate } =
+  const { mutateAsync: createPost, isPending: isLoadingCreate } =
     useCreatePost();
-  const { mutateAsync: updatePost, isLoading: isLoadingUpdate } =
+  const { mutateAsync: updatePost, isPending: isLoadingUpdate } =
     useUpdatePost();
 
   // Handler
@@ -83,7 +83,8 @@ const PostForm = ({ post, action }: PostFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="flex flex-col gap-9 w-full  max-w-5xl">
+        className="flex w-full max-w-5xl flex-col  gap-9"
+      >
         <FormField
           control={form.control}
           name="caption"
@@ -153,17 +154,19 @@ const PostForm = ({ post, action }: PostFormProps) => {
           )}
         />
 
-        <div className="flex gap-4 items-center justify-end">
+        <div className="flex items-center justify-end gap-4">
           <Button
             type="button"
             className="shad-button_dark_4"
-            onClick={() => navigate(-1)}>
+            onClick={() => navigate(-1)}
+          >
             Cancel
           </Button>
           <Button
             type="submit"
             className="shad-button_primary whitespace-nowrap"
-            disabled={isLoadingCreate || isLoadingUpdate}>
+            disabled={isLoadingCreate || isLoadingUpdate}
+          >
             {(isLoadingCreate || isLoadingUpdate) && <Loader />}
             {action} Post
           </Button>
